@@ -31,10 +31,10 @@ public class Customer implements UserDetails {
     private String password;
     @Enumerated(EnumType.STRING)
     private CustomerRole customerRole;
-    private Boolean locked;
-    private Boolean enabled;
+    private Boolean locked = false;
+    private Boolean enabled = false;
 
-    public Customer(String firstname, String lastname, Date birthdate, String email, String phone_number, String password, CustomerRole customerRole, Boolean locked, Boolean enabled) {
+    public Customer(String firstname, String lastname, Date birthdate, String email, String phone_number, String password, CustomerRole customerRole) {
         this.firstname = firstname;
         this.lastname = lastname;
         this.birthdate = birthdate;
@@ -42,8 +42,6 @@ public class Customer implements UserDetails {
         this.phone_number = phone_number;
         this.password = password;
         this.customerRole = customerRole;
-        this.locked = locked;
-        this.enabled = enabled;
     }
 
     @Override
@@ -51,6 +49,7 @@ public class Customer implements UserDetails {
         SimpleGrantedAuthority authority = new SimpleGrantedAuthority(customerRole.name());
         return Collections.singletonList(authority);
     }
+
 
     @Override
     public String getPassword() {
@@ -60,6 +59,13 @@ public class Customer implements UserDetails {
     @Override
     public String getUsername() {
         return email;
+    }
+
+    public String getFirstname() {
+        return firstname;
+    }
+    public String getLastname() {
+        return lastname;
     }
 
     @Override
