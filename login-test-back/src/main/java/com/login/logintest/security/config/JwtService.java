@@ -1,4 +1,4 @@
-package com.login.logintest.config;
+package com.login.logintest.security.config;
 
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -9,7 +9,6 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.security.Key;
-import java.util.Base64;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -18,7 +17,7 @@ import java.util.function.Function;
 @Service
 public class JwtService {
 
-    private static final String SECRET_KEY = "AZW/5OwyaahAqcLJY0fcPy7qM4/dnqgrBHtlSq05aA+J/Uysrb/FxcEEdYAYNKpPY9W7OrqFEyHWXXh32yy/8JCaSIO5EYe9jAXc9SoNfCp1mo7RU5edGf30TjaxadXi4Ag5IsVAW8Ku0XcJpIPGSrNay/nQTLJ+pQ89i2xg+5dpUdQiO+ShRaV9bZDLRS5A2i54LUuEYStEXA0PDZao3LVrG+4vDva0Qmz/RSpCtoCPp29Z8Ie9DixAabEv7ASitktKU3bO6szOkpB4ezdt7wsBYChHXMWWxK2RvryL4WAZ9VV5a74xFT5MDErq4a8HuLcnKISRtrCGhTVeZ+V3sw9/jiJK9I/OJYAs23hWPCg=\n";
+    private static final String SECRET_KEY = "lTENDhKZD27cTyTW+Rgsv/cGiudUI285PVy6p5yqZyFZ9nIzaJq+ofZQ7Ns2aUV82F93LhU1JC+SPvyWPc57zfkQXJsqklcBSXvyvUbn3JitoaI8l1m0aODnp/EcuwyxUVGzB9DMnuOHDNOGQX6mrvg5o1GjCBvxS6aa8Od6v1M5vQNEZalaCiwE5A5VkDDvQ+V/+hpdBov3dVMujGWPjeckzR7Cb+c5dvtCh9r9zjWaaD7C9+zSxEgld84yTXJNrFgplHGPZWtg7pmCSKf3RWXZZXDpNbCIthPlFCKMMgvND1pbF0xEBsrqJV/WOVrgQzIFhZ/ZH8Ps3LZAicAcRTb+jWWsyeFYa1SX8MqEChI=\n";
 
     public String extractUsername(String token) {
         return extractClaim(token, Claims::getSubject);
@@ -36,13 +35,13 @@ public class JwtService {
             Map<String, Object> extraClaims,
             UserDetails userDetails
     ){
-      return Jwts.builder()
-              .setClaims(extraClaims)
-              .setSubject(userDetails.getUsername())
-              .setIssuedAt(new Date(System.currentTimeMillis()))
-              .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
-              .signWith(getSignInKey(), SignatureAlgorithm.HS256)
-              .compact();
+        return Jwts.builder()
+                .setClaims(extraClaims)
+                .setSubject(userDetails.getUsername())
+                .setIssuedAt(new Date(System.currentTimeMillis()))
+                .setExpiration(new Date(System.currentTimeMillis()+1000*60*24))
+                .signWith(getSignInKey(), SignatureAlgorithm.HS256)
+                .compact();
     }
 
     public Boolean isTokenValid(String token, UserDetails userDetails){
@@ -71,3 +70,5 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 }
+
+

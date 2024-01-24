@@ -1,4 +1,4 @@
-package com.login.logintest.config;
+package com.login.logintest.security.config;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

@@ -1,6 +1,5 @@
 package com.login.logintest.customer;
 
-import com.login.logintest.user.UserRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
