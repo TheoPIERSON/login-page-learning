@@ -1,5 +1,7 @@
 package com.login.logintest.customer;
 
+import com.login.logintest.registration.token.ConfirmationToken;
+import com.login.logintest.registration.token.ConfirmationTokenService;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -7,13 +9,18 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
+import java.util.UUID;
+
 @Service
 @AllArgsConstructor
 public class CustomerService implements UserDetailsService {
 
     private final static String USER_NOT_FOUND_MSG = "user with email %s not found";
+
     private final CustomerRepository customerRepository;
     private final BCryptPasswordEncoder bCryptPasswordEncoder;
+    private final ConfirmationTokenService confirmationTokenService;
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
@@ -29,10 +36,23 @@ public class CustomerService implements UserDetailsService {
 
         customer.setPassword(encodedPassword);
 
+        // TODO: send confirmation token
         customerRepository.save(customer);
 
-        // TODO: send confirmation token
+        String token = UUID.randomUUID().toString();
+        ConfirmationToken confirmationToken = new ConfirmationToken(
+                token,
+                LocalDateTime.now(),
+                LocalDateTime.now().plusMinutes(15),
+                customer
+        );
+        confirmationTokenService.saveConfirmationToken(confirmationToken);
 
-        return "it works";
+        // TODO send email
+        return token;
+    }
+
+    public int enableCustomer(String email) {
+        return customerRepository.enableCustomer(email);
     }
 }

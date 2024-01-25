@@ -26,17 +26,15 @@ public class WebSecurityConfiguration  {
         return http
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("onyx/registration/**").permitAll()
+                        .requestMatchers("onyx/admin/**").permitAll()
                         .anyRequest().authenticated()
                 )
-
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
-                .formLogin(AbstractAuthenticationFilterConfigurer::permitAll
-                )
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-
+                .formLogin(auth -> auth.loginPage("/onyx/admin/login").permitAll())
                 .build();
     }
+
 }
 
