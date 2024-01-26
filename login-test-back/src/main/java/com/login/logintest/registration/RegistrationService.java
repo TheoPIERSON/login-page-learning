@@ -21,7 +21,7 @@ public class RegistrationService {
 
     public String register(RegistrationRequest request) {
         boolean isValidEmail = emailValidator.test(request.getEmail());
-        if (!isValidEmail){
+        if (!isValidEmail) {
             throw new IllegalStateException("email not valid");
         }
         return customerService.signUpCustomer(
@@ -59,5 +59,4 @@ public class RegistrationService {
                 confirmationToken.getCustomer().getEmail());
         return "confirmed";
     }
-
 }

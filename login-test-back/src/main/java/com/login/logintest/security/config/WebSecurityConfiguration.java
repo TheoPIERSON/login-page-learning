@@ -25,6 +25,7 @@ public class WebSecurityConfiguration  {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         return http
                 .csrf(csrf -> csrf.disable())
+                .formLogin(auth -> auth.successForwardUrl("/onyx/hello"))
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("onyx/admin/**").permitAll()
                         .anyRequest().authenticated()
@@ -32,7 +33,6 @@ public class WebSecurityConfiguration  {
                 .sessionManagement(sess -> sess.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class)
-                .formLogin(auth -> auth.loginPage("/onyx/admin/login").permitAll())
                 .build();
     }
 
